@@ -1,0 +1,21 @@
+# Generated output (keep the folder, ignore its contents)
+output/*
+!output/.gitkeep
+
+# Temp working files
+temp/*
+!temp/.gitkeep
+
+# History is runtime state; comment this out if you want to version it
+# history.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS / editor cruft
+.DS_Store
+.vscode/
+*.swp

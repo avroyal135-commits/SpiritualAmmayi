@@ -1,0 +1,12 @@
+# Devotional Shorts Generator -- dependencies
+# Deliberately lightweight: no GPU, no CUDA, no TensorFlow/PyTorch,
+# no Stable Diffusion / RealESRGAN. All rendering is done by the
+# system `ffmpeg` binary (installed separately in the GitHub Actions
+# workflow / locally via apt).
+
+Pillow>=10.3.0,<11.0.0
+
+# Google Drive upload (service account auth)
+google-api-python-client>=2.126.0,<3.0.0
+google-auth>=2.29.0,<3.0.0
+google-auth-httplib2>=0.2.0,<1.0.0
