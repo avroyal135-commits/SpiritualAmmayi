@@ -41,40 +41,40 @@ class DriveUploader:
 
 
     def _init_service(self) -> None:
-    client_id = os.environ.get("GOOGLE_CLIENT_ID")
-    client_secret = os.environ.get("GOOGLE_CLIENT_SECRET")
-    refresh_token = os.environ.get("GOOGLE_REFRESH_TOKEN")
+        client_id = os.environ.get("GOOGLE_CLIENT_ID")
+        client_secret = os.environ.get("GOOGLE_CLIENT_SECRET")
+        refresh_token = os.environ.get("GOOGLE_REFRESH_TOKEN")
 
-    if not all([client_id, client_secret, refresh_token, self.root_folder_id]):
-        log.warning("OAuth credentials not configured.")
-        return
-
-    try:
-        from google.oauth2.credentials import Credentials
-        from googleapiclient.discovery import build
-
-        credentials = Credentials(
-            token=None,
-            refresh_token=refresh_token,
-            token_uri="https://oauth2.googleapis.com/token",
-            client_id=client_id,
-            client_secret=client_secret,
-            scopes=_SCOPES,
-        )
-
-        self._service = build(
-            "drive",
-            "v3",
-            credentials=credentials,
-            cache_discovery=False,
-        )
-
-        self.enabled = True
-        log.info("Google Drive OAuth initialized.")
-
-    except Exception as exc:
-        log.error("Failed to initialize Google Drive OAuth: %s", exc)
-        self.enabled = False
+        if not all([client_id, client_secret, refresh_token, self.root_folder_id]):
+            log.warning("OAuth credentials not configured.")
+            return
+    
+        try:
+            from google.oauth2.credentials import Credentials
+            from googleapiclient.discovery import build
+    
+            credentials = Credentials(
+                token=None,
+                refresh_token=refresh_token,
+                token_uri="https://oauth2.googleapis.com/token",
+                client_id=client_id,
+                client_secret=client_secret,
+                scopes=_SCOPES,
+            )
+    
+            self._service = build(
+                "drive",
+                "v3",
+                credentials=credentials,
+                cache_discovery=False,
+            )
+    
+            self.enabled = True
+            log.info("Google Drive OAuth initialized.")
+    
+        except Exception as exc:
+            log.error("Failed to initialize Google Drive OAuth: %s", exc)
+            self.enabled = False
     # ------------------------------------------------------------------
     # Folder management
     # ------------------------------------------------------------------
