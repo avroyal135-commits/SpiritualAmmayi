@@ -202,7 +202,7 @@ def pick_n_avoiding_recent(items: Sequence[T], recent: Iterable[T], n: int) -> L
     return ordered_pool[:n]
 
 
-from textwrap import TextWrapper
+from textwrap
 
 import textwrap
 
