@@ -204,20 +204,40 @@ def pick_n_avoiding_recent(items: Sequence[T], recent: Iterable[T], n: int) -> L
 
 from textwrap import TextWrapper
 
-def wrap_text(text: str, max_chars: int) -> str:
-    wrapper = TextWrapper(
-        width=max_chars,
-        break_long_words=False,
-        break_on_hyphens=False,
-    )
+import textwrap
 
-    lines = []
+def wrap_text(text: str, max_chars: int | None = None) -> str:
+    """
+    Automatically wrap Telugu/English text.
 
-    for paragraph in text.splitlines():
-        if not paragraph.strip():
-            lines.append("")
-            continue
+    Long quotes -> smaller line width.
+    Short quotes -> larger line width.
+    """
 
-        lines.extend(wrapper.wrap(paragraph))
+    text = text.strip()
 
-    return "\n".join(lines)
+    if max_chars is None:
+        length = len(text)
+
+        if length <= 35:
+            max_chars = 18
+        elif length <= 60:
+            max_chars = 15
+        elif length <= 90:
+            max_chars = 12
+        else:
+            max_chars = 10
+
+    wrapped = []
+
+    for paragraph in text.split("\n"):
+        wrapped.extend(
+            textwrap.wrap(
+                paragraph,
+                width=max_chars,
+                break_long_words=True,
+                break_on_hyphens=False,
+            )
+        )
+
+    return "\n".join(wrapped)
