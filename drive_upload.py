@@ -26,7 +26,7 @@ from typing import Dict, List, Optional
 import config
 from utils import log
 
-_SCOPES = ["https://www.googleapis.com/auth/drive"]
+_SCOPES = ["https://www.googleapis.com/auth/drive.file"]
 
 
 class DriveUploader:
