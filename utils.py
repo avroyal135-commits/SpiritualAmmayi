@@ -202,26 +202,22 @@ def pick_n_avoiding_recent(items: Sequence[T], recent: Iterable[T], n: int) -> L
     return ordered_pool[:n]
 
 
+from textwrap import TextWrapper
+
 def wrap_text(text: str, max_chars: int) -> str:
-    """
-    Word-wrap text (line by line, preserving explicit newlines already
-    present) so it fits within max_chars per line — needed since FFmpeg's
-    drawtext does not auto-wrap.
-    """
-    out_lines: List[str] = []
-    for existing_line in text.split("\n"):
-        words = existing_line.split(" ")
-        current = ""
-        for word in words:
-            candidate = f"{current} {word}".strip()
-            if len(candidate) <= max_chars:
-                current = candidate
-            else:
-                if current:
-                    out_lines.append(current)
-                current = word
-        if current:
-            out_lines.append(current)
-        if not existing_line.strip():
-            out_lines.append("")
-    return "\n".join(out_lines)
+    wrapper = TextWrapper(
+        width=max_chars,
+        break_long_words=False,
+        break_on_hyphens=False,
+    )
+
+    lines = []
+
+    for paragraph in text.splitlines():
+        if not paragraph.strip():
+            lines.append("")
+            continue
+
+        lines.extend(wrapper.wrap(paragraph))
+
+    return "\n".join(lines)
