@@ -50,24 +50,29 @@ VIDEO_EXTENSIONS: List[str] = [".mp4", ".mov", ".m4v"]
 VIDEO_WIDTH: int = 720
 VIDEO_HEIGHT: int = 1280
 
-TOP_HEIGHT_RATIO: float = 0.70
-BOTTOM_HEIGHT_RATIO: float = 0.30
+# 50% Top + 50% Bottom
+TOP_HEIGHT_RATIO: float = 0.50
+BOTTOM_HEIGHT_RATIO: float = 0.50
 
-TOP_HEIGHT: int = int(VIDEO_HEIGHT * TOP_HEIGHT_RATIO)          # 896
-BOTTOM_HEIGHT: int = VIDEO_HEIGHT - TOP_HEIGHT                   # 384
+TOP_HEIGHT: int = VIDEO_HEIGHT // 2      # 640
+BOTTOM_HEIGHT: int = VIDEO_HEIGHT // 2   # 640
 
 FPS: int = 30
 
 # ---------------------------------------------------------------------------
 # Durations (seconds)
 # ---------------------------------------------------------------------------
-MIN_CLIPS_PER_SHORT: int = 3
-MAX_CLIPS_PER_SHORT: int = 5
+# 8–9 clips
 
-MIN_CLIP_DURATION: float = 2.2
-MAX_CLIP_DURATION: float = 3.4
+MIN_CLIPS_PER_SHORT = 8
+MAX_CLIPS_PER_SHORT = 9
 
-TRANSITION_DURATION: float = 0.6
+# each clip lasts around 5–5.5 seconds
+
+MIN_CLIP_DURATION = 5.0
+MAX_CLIP_DURATION = 5.5
+
+TRANSITION_DURATION = 0.7
 
 OUTRO_DURATION: float = 2.0
 OUTRO_TEXT_DEFAULT: str = "\U0001F64F Subscribe for Daily Blessings \U0001F64F"
@@ -101,8 +106,8 @@ PAN_TRAVEL_FRACTION: float = 0.12
 MICRO_ROTATE_DEGREES: float = 1.6
 
 # Random speed multiplier bounds applied to motion progress
-SPEED_MIN: float = 0.75
-SPEED_MAX: float = 1.35
+SPEED_MIN: float = 0.35
+SPEED_MAX: float = 0.60
 
 # ---------------------------------------------------------------------------
 # Transitions
