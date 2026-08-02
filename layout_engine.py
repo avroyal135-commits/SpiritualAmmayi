@@ -61,7 +61,7 @@ def build_bottom_bar_image(
     temp_dir.mkdir(parents=True, exist_ok=True)
     font_size, line_spacing, wrap_width = get_quote_style(quote)
 
-    quote_wrapped = wrap_text(quote)
+    quote_wrapped = wrap_text(quote, wrap_width)
     quote_file = temp_dir / "quote.txt"
     quote_file.write_text(quote_wrapped, encoding="utf-8")
 
