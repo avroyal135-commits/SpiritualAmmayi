@@ -79,7 +79,8 @@ def build_bottom_bar_image(
         f"bordercolor={config.QUOTE_BORDER_COLOR}:"
         f"borderw={config.QUOTE_BORDER_WIDTH}:"
         f"line_spacing={line_spacing}:"
-        f"x=(w-text_w)/2:y=max((h-text_h)/2,25)"
+        f"x=(w-text_w)/2:"
+        f"y=(h-text_h)/2"
     )
 
     run_ffmpeg(
