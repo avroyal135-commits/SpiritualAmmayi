@@ -27,7 +27,13 @@ from pathlib import Path
 from typing import Optional
 
 import config
-from utils import log, run_ffmpeg, wrap_text, ffprobe_duration
+from utils import (
+    log,
+    run_ffmpeg,
+    wrap_text,
+    ffprobe_duration,
+    get_quote_style,
+)
 
 
 def _escape_path_for_filter(path: Path) -> str:
@@ -53,7 +59,9 @@ def build_bottom_bar_image(
     top of it (bordered text for legibility against any background).
     """
     temp_dir.mkdir(parents=True, exist_ok=True)
-    quote_wrapped = wrap_text(quote, config.QUOTE_MAX_CHARS_PER_LINE)
+    font_size, line_spacing, wrap_width = get_quote_style(quote)
+
+    quote_wrapped = wrap_text(quote)
     quote_file = temp_dir / "quote.txt"
     quote_file.write_text(quote_wrapped, encoding="utf-8")
 
@@ -66,10 +74,12 @@ def build_bottom_bar_image(
         # Subtle darken so white bordered text stays legible on any photo
         f"eq=brightness=-0.06,"
         f"drawtext=fontfile='{fontfile}':textfile='{textfile}':"
-        f"fontcolor={config.QUOTE_FONT_COLOR}:fontsize={config.QUOTE_FONT_SIZE}:"
-        f"bordercolor={config.QUOTE_BORDER_COLOR}:borderw={config.QUOTE_BORDER_WIDTH}:"
-        f"line_spacing={config.QUOTE_LINE_SPACING}:"
-        f"x=(w-text_w)/2:y=(h-text_h)/2"
+        f"fontcolor={config.QUOTE_FONT_COLOR}:"
+        f"fontsize={font_size}:"
+        f"bordercolor={config.QUOTE_BORDER_COLOR}:"
+        f"borderw={config.QUOTE_BORDER_WIDTH}:"
+        f"line_spacing={line_spacing}:"
+        f"x=(w-text_w)/2:y=max((h-text_h)/2,25)"
     )
 
     run_ffmpeg(
