@@ -51,11 +51,18 @@ VIDEO_WIDTH: int = 720
 VIDEO_HEIGHT: int = 1280
 
 # 50% Top + 50% Bottom
+# ---------------------------------------------------------------------------
+# Video geometry
+# ---------------------------------------------------------------------------
+
+VIDEO_WIDTH: int = 720
+VIDEO_HEIGHT: int = 1280
+
 TOP_HEIGHT_RATIO: float = 0.50
 BOTTOM_HEIGHT_RATIO: float = 0.50
 
-TOP_HEIGHT: int = VIDEO_HEIGHT // 2      # 640
-BOTTOM_HEIGHT: int = VIDEO_HEIGHT // 2   # 640
+TOP_HEIGHT: int = int(VIDEO_HEIGHT * TOP_HEIGHT_RATIO)   # 640
+BOTTOM_HEIGHT: int = VIDEO_HEIGHT - TOP_HEIGHT           # 640
 
 FPS: int = 30
 
@@ -64,21 +71,27 @@ FPS: int = 30
 # ---------------------------------------------------------------------------
 # 8–9 clips
 
+# ---------------------------------------------------------------------------
+# Duration Settings
+# ---------------------------------------------------------------------------
+
+# More clips
 MIN_CLIPS_PER_SHORT = 8
-MAX_CLIPS_PER_SHORT = 9
+MAX_CLIPS_PER_SHORT = 10
 
-# each clip lasts around 5–5.5 seconds
-
+# Every clip lasts longer
 MIN_CLIP_DURATION = 5.0
-MAX_CLIP_DURATION = 5.5
+MAX_CLIP_DURATION = 6.0
 
-TRANSITION_DURATION = 0.7
+# Smooth transition
+TRANSITION_DURATION = 0.8
 
-OUTRO_DURATION: float = 2.0
-OUTRO_TEXT_DEFAULT: str = "\U0001F64F Subscribe for Daily Blessings \U0001F64F"
-
-TARGET_TOTAL_DURATION_MIN: float = 15.0
-TARGET_TOTAL_DURATION_MAX: float = 45.0
+# Longer outro
+OUTRO_DURATION = 3.0
+OUTRO_TEXT_DEFAULT = "🙏 Subscribe for Daily Blessings 🙏"
+# Final target
+TARGET_TOTAL_DURATION_MIN = 40.0
+TARGET_TOTAL_DURATION_MAX = 45.0
 
 # ---------------------------------------------------------------------------
 # Motion engine
@@ -142,22 +155,31 @@ OVERLAY_OPACITY: float = 0.28
 # ---------------------------------------------------------------------------
 WATERMARK_OPACITY: float = 0.35
 WATERMARK_MARGIN_PX: int = 24
-WATERMARK_MAX_WIDTH_RATIO: float = 0.28  # fraction of video width
+WATERMARK_MAX_WIDTH_RATIO: float = 0.20  # fraction of video width
 
 # ---------------------------------------------------------------------------
 # Text (quote) styling
 # ---------------------------------------------------------------------------
-QUOTE_FONT_SIZE: int = 42
-QUOTE_FONT_COLOR: str = "white"
-QUOTE_BORDER_COLOR: str = "black"
-QUOTE_BORDER_WIDTH: int = 3
-QUOTE_LINE_SPACING: int = 12
-QUOTE_MAX_CHARS_PER_LINE: int = 22
+# ---------------------------------------------------------------------------
+# Text (quote) styling
+# ---------------------------------------------------------------------------
 
-OUTRO_FONT_SIZE: int = 46
-OUTRO_FONT_COLOR: str = "yellow"
-OUTRO_BORDER_COLOR: str = "black"
-OUTRO_BORDER_WIDTH: int = 3
+QUOTE_FONT_SIZE = 58
+
+QUOTE_FONT_COLOR = "white"
+
+QUOTE_BORDER_COLOR = "black"
+
+QUOTE_BORDER_WIDTH = 6
+
+QUOTE_LINE_SPACING = 24
+
+QUOTE_MAX_CHARS_PER_LINE = 20
+
+OUTRO_FONT_SIZE = 56
+OUTRO_FONT_COLOR = "yellow"
+OUTRO_BORDER_COLOR = "black"
+OUTRO_BORDER_WIDTH = 4
 
 # ---------------------------------------------------------------------------
 # Thumbnail
