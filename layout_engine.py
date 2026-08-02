@@ -1,15 +1,19 @@
 """
 layout_engine.py
 =================
-Responsible for the final visual composition of a Short:
+Responsible for composing the final 720x1280 devotional Short.
+
+Layout:
+    • Top 50%  : God slideshow/video
+    • Bottom 50% : Girl image + Telugu quote
 
     +-----------------------+
     |                       |
-    |   God slideshow /     |   <- top 70% (never covered by text)
-    |   video (top 70%)     |
+    |   God slideshow /     |   <- top 50%
+    |   video (top 50%)     |
     |                       |
     +-----------------------+
-    |  girl image + quote   |   <- bottom 30%
+    |  girl image + quote   |   <- bottom 50%
     +-----------------------+
 
 Also layers in optional particle/light overlay effects (confined to the
