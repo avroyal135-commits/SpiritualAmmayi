@@ -149,8 +149,15 @@ class DriveUploader:
 
         folder_id = self._build_date_folder_path(god_name)
 
-        video_id = self._upload_file(video_path, folder_id, "video/mp4") if video_path.exists() else None
-        thumb_id = self._upload_file(thumbnail_path, folder_id, "image/jpeg") if thumbnail_path.exists() else None
-        meta_id = self._upload_file(metadata_path, folder_id, "application/json") if metadata_path.exists() else None
 
-        return {"video": video_id, "thumbnail": thumb_id, "metadata": meta_id}
+
+        video_id = None
+        
+        if video_path.exists():
+            video_id = self._upload_file(
+                video_path,
+                folder_id,
+                "video/mp4",
+            )
+        
+        return {"video": video_id}
