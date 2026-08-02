@@ -235,7 +235,7 @@ def wrap_text(text: str, max_chars: int | None = None) -> str:
             textwrap.wrap(
                 paragraph,
                 width=max_chars,
-                break_long_words=True,
+                break_long_words=False,
                 break_on_hyphens=False,
             )
         )
