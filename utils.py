@@ -241,3 +241,25 @@ def wrap_text(text: str, max_chars: int | None = None) -> str:
         )
 
     return "\n".join(wrapped)
+def get_quote_style(text: str):
+    """
+    Automatically choose font size, line spacing and wrap width
+    based on quote length.
+    """
+
+    length = len(text)
+
+    if length <= 35:
+        return 54, 30, 18
+
+    elif length <= 60:
+        return 48, 28, 15
+
+    elif length <= 90:
+        return 42, 24, 12
+
+    elif length <= 120:
+        return 36, 20, 10
+
+    else:
+        return 32, 18, 9
