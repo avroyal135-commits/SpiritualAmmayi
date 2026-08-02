@@ -164,15 +164,15 @@ WATERMARK_MAX_WIDTH_RATIO: float = 0.20  # fraction of video width
 # Text (quote) styling
 # ---------------------------------------------------------------------------
 
-QUOTE_FONT_SIZE = 58
+QUOTE_FONT_SIZE = 56
 
 QUOTE_FONT_COLOR = "white"
 
 QUOTE_BORDER_COLOR = "black"
 
-QUOTE_BORDER_WIDTH = 6
+QUOTE_BORDER_WIDTH = 3
 
-QUOTE_LINE_SPACING = 24
+QUOTE_LINE_SPACING = 26
 
 QUOTE_MAX_CHARS_PER_LINE = 20
 
