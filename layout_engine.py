@@ -37,10 +37,10 @@ from utils import (
 
 
 def _escape_path_for_filter(path: Path) -> str:
-    """Escape a filesystem path so it is safe inside an FFmpeg filter
-    option string (colons and backslashes need escaping)."""
     s = str(path)
-    s = s.replace("\\", "\\\\").replace(":", "\\:")
+    s = s.replace("\\", "\\\\")
+    s = s.replace(":", "\\:")
+    s = s.replace("'", "\\'")
     return s
 
 
@@ -73,7 +73,7 @@ def build_bottom_bar_image(
         f"crop={width}:{height},"
         # Subtle darken so white bordered text stays legible on any photo
         f"eq=brightness=-0.06,"
-        f"drawtext=fontfile='{fontfile}':textfile='{textfile}':"
+        f"drawtext=fontfile={fontfile}:textfile={textfile}:"
         f"fontcolor={config.QUOTE_FONT_COLOR}:"
         f"fontsize={font_size}:"
         f"bordercolor={config.QUOTE_BORDER_COLOR}:"
@@ -142,7 +142,16 @@ def compose_final_short(
     filter_steps = []
 
     # 1) Bottom bar: static image -> fixed-duration video stream
-    filter_steps.append(f"[1:v]trim=duration={total_duration:.3f},setpts=PTS-STARTPTS[bottombar]")
+
+
+
+    filter_steps.append(
+        f"[1:v]"
+        f"loop=-1:size=1:start=0,"
+        f"fps={fps},"
+        f"trim=duration={total_duration:.3f},"
+        f"setpts=PTS-STARTPTS[bottombar]"
+    )
 
     # 2) Stack top (god) + bottom (girl/quote) vertically
     filter_steps.append(f"[0:v][bottombar]vstack=inputs=2[stacked]")
@@ -165,7 +174,7 @@ def compose_final_short(
     outro_y = top_height - 140
     outro_start = max(total_duration - config.OUTRO_DURATION, 0.0)
     filter_steps.append(
-        f"[{current}]drawtext=fontfile='{outro_fontfile}':textfile='{outro_textfile}':"
+        f"[{current}]drawtext=fontfile={outro_fontfile}:textfile={outro_textfile}:"
         f"fontcolor={config.OUTRO_FONT_COLOR}:fontsize={config.OUTRO_FONT_SIZE}:"
         f"bordercolor={config.OUTRO_BORDER_COLOR}:borderw={config.OUTRO_BORDER_WIDTH}:"
         f"box=1:boxcolor=black@0.45:boxborderw=18:"
