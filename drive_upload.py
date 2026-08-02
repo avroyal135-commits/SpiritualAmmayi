@@ -39,39 +39,42 @@ class DriveUploader:
         self._folder_cache: Dict[str, str] = {}
         self._init_service()
 
+
     def _init_service(self) -> None:
-        raw_creds = os.environ.get(config.GDRIVE_SERVICE_ACCOUNT_ENV)
-        if not raw_creds or not self.root_folder_id:
-            log.warning(
-                "Google Drive credentials or root folder id not set "
-                "(%s / %s). Skipping Drive upload for this run.",
-                config.GDRIVE_SERVICE_ACCOUNT_ENV, config.GDRIVE_ROOT_FOLDER_ID_ENV,
-            )
-            return
+    client_id = os.environ.get("GOOGLE_CLIENT_ID")
+    client_secret = os.environ.get("GOOGLE_CLIENT_SECRET")
+    refresh_token = os.environ.get("GOOGLE_REFRESH_TOKEN")
 
-        try:
-            from google.oauth2 import service_account
-            from googleapiclient.discovery import build
-        except ImportError:
-            log.error(
-                "google-api-python-client / google-auth not installed; "
-                "cannot upload to Drive. See requirements.txt."
-            )
-            return
+    if not all([client_id, client_secret, refresh_token, self.root_folder_id]):
+        log.warning("OAuth credentials not configured.")
+        return
 
-        try:
-            info = json.loads(raw_creds)
-            credentials = service_account.Credentials.from_service_account_info(
-                info, scopes=_SCOPES
-            )
-            self._service = build("drive", "v3", credentials=credentials, cache_discovery=False)
-            self.enabled = True
-            log.info("Google Drive service initialized.")
-        except Exception as exc:  # noqa: BLE001 - surface any auth error clearly
-            log.error("Failed to initialize Google Drive service: %s", exc)
-            self._service = None
-            self.enabled = False
+    try:
+        from google.oauth2.credentials import Credentials
+        from googleapiclient.discovery import build
 
+        credentials = Credentials(
+            token=None,
+            refresh_token=refresh_token,
+            token_uri="https://oauth2.googleapis.com/token",
+            client_id=client_id,
+            client_secret=client_secret,
+            scopes=_SCOPES,
+        )
+
+        self._service = build(
+            "drive",
+            "v3",
+            credentials=credentials,
+            cache_discovery=False,
+        )
+
+        self.enabled = True
+        log.info("Google Drive OAuth initialized.")
+
+    except Exception as exc:
+        log.error("Failed to initialize Google Drive OAuth: %s", exc)
+        self.enabled = False
     # ------------------------------------------------------------------
     # Folder management
     # ------------------------------------------------------------------
