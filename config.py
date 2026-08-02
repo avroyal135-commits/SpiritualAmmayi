@@ -163,23 +163,21 @@ WATERMARK_MAX_WIDTH_RATIO: float = 0.20  # fraction of video width
 # ---------------------------------------------------------------------------
 # Text (quote) styling
 # ---------------------------------------------------------------------------
-
-QUOTE_FONT_SIZE = 56
-
+# Telugu quote
+QUOTE_FONT_SIZE = 42
 QUOTE_FONT_COLOR = "white"
-
 QUOTE_BORDER_COLOR = "black"
-
-QUOTE_BORDER_WIDTH = 3
-
-QUOTE_LINE_SPACING = 26
-
-QUOTE_MAX_CHARS_PER_LINE = 20
-
+QUOTE_BORDER_WIDTH = 5
 OUTRO_FONT_SIZE = 56
 OUTRO_FONT_COLOR = "yellow"
 OUTRO_BORDER_COLOR = "black"
 OUTRO_BORDER_WIDTH = 4
+
+# More vertical spacing
+QUOTE_LINE_SPACING = 38
+
+# Wrap sooner
+QUOTE_MAX_CHARS_PER_LINE = 12
 
 # ---------------------------------------------------------------------------
 # Thumbnail
