@@ -54,7 +54,9 @@ def _select_clip_sources(god_folder: Path) -> List[Path]:
     if not files:
         raise RuntimeError(f"God folder {god_folder} has no usable media files.")
 
-    desired = random.randint(config.MIN_CLIPS_PER_SHORT, config.MAX_CLIPS_PER_SHORT)
+  
+  # Favor 8–9 clips for ~40–45 second shorts
+    desired = random.choice([8, 8, 8, 9, 9, 10])
     if len(files) >= desired:
         return random.sample(files, desired)
     # Not enough unique files: allow repeats so the slideshow still has
@@ -88,13 +90,50 @@ def generate_one_short(
         clips: List[ClipSpec] = []
         used_motions_this_run: List[str] = []
 
+# ------------------------------------------------------------
+# Calculate clip durations so final video is always 40–45 sec
+# ------------------------------------------------------------
+        clip_count = len(sources)
+        
+        target_duration = random.uniform(
+            config.TARGET_TOTAL_DURATION_MIN,
+            config.TARGET_TOTAL_DURATION_MAX,
+        )
+        
+        transition_total = max(0, clip_count - 1) * config.TRANSITION_DURATION
+        
+        usable_duration = target_duration - transition_total
+        
+        base_clip_duration = usable_duration / clip_count
+        
         for i, source in enumerate(sources):
-            duration = round(random.uniform(config.MIN_CLIP_DURATION, config.MAX_CLIP_DURATION), 2)
-            recent_motions = history.recent("motions") + used_motions_this_run
-            plan: MotionPlan = get_random_motion(recent_motions)
-            used_motions_this_run.append(plan.motion)
 
+            min_duration = max(
+                config.MIN_CLIP_DURATION,
+                base_clip_duration - 0.4,
+            )
+            
+            max_duration = min(
+                config.MAX_CLIP_DURATION,
+                base_clip_duration + 0.4,
+            )
+            
+            if min_duration > max_duration:
+                min_duration = max_duration = base_clip_duration
+            
+            duration = round(
+                random.uniform(min_duration, max_duration),
+                2,
+            )
+        
+            recent_motions = history.recent("motions") + used_motions_this_run
+        
+            plan: MotionPlan = get_random_motion(recent_motions)
+        
+            used_motions_this_run.append(plan.motion)
+        
             clip_path = temp_dir / f"clip_{i:02d}.mp4"
+        
             render_motion_clip(
                 source=source,
                 output_path=clip_path,
@@ -103,7 +142,13 @@ def generate_one_short(
                 width=config.VIDEO_WIDTH,
                 height=config.TOP_HEIGHT,
             )
-            clips.append(ClipSpec(path=clip_path, duration=duration))
+        
+            clips.append(
+                ClipSpec(
+                    path=clip_path,
+                    duration=duration,
+                )
+            )
 
         # -- 3. Transitions + slideshow ----------------------------------
         recent_transitions = history.recent("transitions")
