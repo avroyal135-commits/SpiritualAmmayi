@@ -217,13 +217,15 @@ def wrap_text(text: str, max_chars: int | None = None) -> str:
         length = len(text)
 
         if length <= 35:
-            max_chars = 18
+            max_chars = 22
         elif length <= 60:
-            max_chars = 15
+            max_chars = 20
         elif length <= 90:
-            max_chars = 12
+            max_chars = 18
+        elif length <= 120:
+            max_chars = 16
         else:
-            max_chars = 10
+            max_chars = 14
 
     wrapped = []
 
@@ -247,16 +249,16 @@ def get_quote_style(text: str):
     length = len(text)
 
     if length <= 35:
-        return 54, 30, 18
+        return 60, 36, 22
 
     elif length <= 60:
-        return 48, 28, 15
+        return 56, 34, 20
 
     elif length <= 90:
-        return 42, 24, 12
+        return 50, 32, 18
 
     elif length <= 120:
-        return 36, 20, 10
+        return 44, 30, 16
 
     else:
-        return 32, 18, 9
+        return 40, 28, 14
